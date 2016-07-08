@@ -32,8 +32,5 @@ public class MainActivity extends AppCompatActivity {
         adapter.add("vader");
         adapter.add("hans");
         adapter.add("andrzej");
-
-
-
     }
 }

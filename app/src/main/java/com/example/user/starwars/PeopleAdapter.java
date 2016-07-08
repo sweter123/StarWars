@@ -1,15 +1,11 @@
 package com.example.user.starwars;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * Created by user on 08.07.2016.
@@ -32,7 +28,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleViewHolder>{
 
     @Override
     public void onBindViewHolder(PeopleViewHolder holder, int position) {
-        //String name = people.get(position).getName();
         holder.setPerson(people.get(position));
     }
 
