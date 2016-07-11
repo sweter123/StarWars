@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleViewHolder>{
 
-    private final ArrayList<Person> people;
+    private ArrayList<Person> people;
     LayoutInflater layoutInflater;
 
     public PeopleAdapter(ArrayList<Person> people, LayoutInflater layoutInflater) {
@@ -36,11 +36,9 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleViewHolder>{
         return people.size();
     }
 
-    public void add(String name){
-        Person person = new Person();
-        person.name = name;
-        people.add(person);
-        notifyItemInserted(people.size());
+    public void add(ArrayList<Person> list){
+        people = list;
+        notifyDataSetChanged();
     }
 
 }
