@@ -1,9 +1,11 @@
 package com.example.user.starwars;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 08.07.2016.
  */
-public class Person {
+public class Person implements Serializable {
     String name;
     String birthYear;
     String eyeColor;
@@ -24,9 +26,7 @@ public class Person {
         return eyeColor;
     }
 
-    public String getHeight() {
-        return height;
-    }
+    public String getHeight() { return height; }
 
     public String getGender() {
         return gender;

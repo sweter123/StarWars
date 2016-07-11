@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Log.i("asd", response.body().getCount());
                     ArrayList<Person> people = new ArrayList<>(response.body().getResults());
+                    Log.i("asd", people.size()+"");
                     adapter.add(people);
                     adapter.notifyDataSetChanged();
                 }

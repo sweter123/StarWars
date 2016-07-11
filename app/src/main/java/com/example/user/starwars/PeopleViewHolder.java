@@ -1,11 +1,15 @@
 package com.example.user.starwars;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import butterknife.OnClick;
+
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by user on 08.07.2016.
@@ -21,7 +25,10 @@ public class PeopleViewHolder extends RecyclerView.ViewHolder{
         nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("asd",(person.name));
+                Context context = view.getContext();
+                Intent details = new Intent(context, DetailsActivity.class);
+                details.putExtra("Person", person);
+                context.startActivity(details);
             }
         });
     }
