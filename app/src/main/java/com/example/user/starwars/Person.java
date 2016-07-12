@@ -40,4 +40,16 @@ public class Person implements Serializable {
         return mass;
     }
 
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", birthYear='" + birthYear + '\'' +
+                ", eyeColor='" + eyeColor + '\'' +
+                ", height='" + height + '\'' +
+                ", gender='" + gender + '\'' +
+                ", hairColor='" + hairColor + '\'' +
+                ", mass='" + mass + '\'' +
+                '}';
+    }
 }
