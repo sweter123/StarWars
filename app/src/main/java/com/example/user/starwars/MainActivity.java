@@ -1,36 +1,30 @@
 package com.example.user.starwars;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
-import retrofit2.CallAdapter;
 import retrofit2.Callback;
-import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PeopleAdapter.PeopleClickListener {
 
     public static final String HTTP_SWAPI_CO_API = "http://swapi.co/api/";
     @BindView(R.id.peopleRecycleView)
@@ -56,7 +50,26 @@ public class MainActivity extends AppCompatActivity {
         StarWarsService service = retrofit.create(StarWarsService.class);
         Call<ResultSet> peopl = service.listPeople();
         peopleRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        final PeopleAdapter adapter = new PeopleAdapter(people, getLayoutInflater());
+        final PeopleAdapter adapter = new PeopleAdapter(people);
+        adapter.setOnClickListener(this);
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                     adapter.notifyDataSetChanged();
+                //Context context = ((PeopleViewHolder)viewHolder).getContext();
+                //Intent details = new Intent(context, DetailsActivity.class);
+                //details.putExtra("Person", ((PeopleViewHolder)viewHolder).getPerson());
+                //context.startActivity(details);
+            }
+        };
+        ItemTouchHelper touchHelper = new ItemTouchHelper(simpleCallback);
+        touchHelper.attachToRecyclerView(peopleRecycleView);
         peopleRecycleView.setAdapter(adapter);
         peopl.enqueue(new Callback<ResultSet>() {
             @Override
@@ -65,10 +78,8 @@ public class MainActivity extends AppCompatActivity {
                     Timber.i(response.body().getCount());
                     ArrayList<Person> people = new ArrayList<>(response.body().getResults());
                     Timber.i(people.size()+"");
-                    adapter.add(people);
-                    adapter.notifyDataSetChanged();
+                    adapter.setItems(people);
                 }
-
             }
 
             @Override
@@ -76,5 +87,12 @@ public class MainActivity extends AppCompatActivity {
                 Timber.e(t,t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onPersonClick(Person person) {
+        Intent details = new Intent(this, DetailsActivity.class);
+        details.putExtra("Person", person);
+        startActivity(details);
     }
 }

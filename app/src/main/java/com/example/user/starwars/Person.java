@@ -39,4 +39,5 @@ public class Person implements Serializable {
     public String getMass() {
         return mass;
     }
+
 }
