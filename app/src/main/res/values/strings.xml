@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StarWars</string>
+    <string name="error_list_empty">Lista jest pusta</string>
 </resources>

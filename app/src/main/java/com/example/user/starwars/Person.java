@@ -40,6 +40,34 @@ public class Person implements Serializable {
         return mass;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBirthYear(String birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public void setEyeColor(String eyeColor) {
+        this.eyeColor = eyeColor;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setHairColor(String hairColor) {
+        this.hairColor = hairColor;
+    }
+
+    public void setMass(String mass) {
+        this.mass = mass;
+    }
+
     @Override
     public String toString() {
         return "Person{" +

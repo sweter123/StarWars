@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,7 +17,7 @@ import butterknife.OnClick;
  */
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>{
 
-    private ArrayList<Person> items;
+    private List<Person> items;
     LayoutInflater layoutInflater;
     PeopleClickListener callback;
 
@@ -26,7 +26,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
     }
 
 
-    public PeopleAdapter(ArrayList<Person> items) {
+    public PeopleAdapter(List<Person> items) {
         this.items = items;
     }
 
@@ -48,7 +48,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         return items.size();
     }
 
-    public void setItems(ArrayList<Person> list){
+    public void setItems(List<Person> list){
         items = list;
         notifyDataSetChanged();
     }
@@ -62,7 +62,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         @BindView(R.id.text1)
          TextView nameView;
 
-
         public PeopleViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -74,8 +73,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
                 callback.onPersonClick(items.get(getAdapterPosition()));
             }
         }
-
-
     }
 
 }

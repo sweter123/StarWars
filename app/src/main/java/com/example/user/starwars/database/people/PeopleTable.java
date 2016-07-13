@@ -1,4 +1,4 @@
-package com.example.user.starwars.database;
+package com.example.user.starwars.database.people;
 
 /**
  * Created by user on 12.07.2016.

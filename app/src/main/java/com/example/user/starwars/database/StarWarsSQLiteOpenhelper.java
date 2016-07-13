@@ -4,17 +4,19 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.user.starwars.database.people.PeopleTable;
+
 import timber.log.Timber;
 
 /**
  * Created by user on 12.07.2016.
  */
-public class PeopleSQLiteOpenhelper extends SQLiteOpenHelper {
+public class StarWarsSQLiteOpenhelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Star_wars.db";
     private static final int version = 1;
 
-    public PeopleSQLiteOpenhelper(Context context) {
+    public StarWarsSQLiteOpenhelper(Context context) {
         super(context, DATABASE_NAME, null, version);
     }
 
