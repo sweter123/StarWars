@@ -1,14 +1,20 @@
 package com.example.user.starwars;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.user.starwars.SWAPI.people.Person;
+import com.example.user.starwars.adapters.PeopleAdapter;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
 
@@ -17,7 +23,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements PeopleAdapter.PeopleClickListener, PeopleListContract.View {
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClickListener, PeopleListContract.View{
 
 
     @BindView(R.id.peopleRecycleView)
@@ -26,13 +36,19 @@ public class MainActivity extends AppCompatActivity implements PeopleAdapter.Peo
     private PeopleListContract.Presenter presenter;
     private PeopleAdapter adapter;
 
+    public PeopleFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        presenter = new PeopleListPresenter(this, this);
-        ButterKnife.bind(this);
-        peopleRecycleView.setLayoutManager(new LinearLayoutManager(this));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_people, container, false);
+        ButterKnife.bind(this, view);
+        presenter = new PeopleListPresenter(this, getContext());
+        peopleRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
@@ -42,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements PeopleAdapter.Peo
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
                 adapter.notifyDataSetChanged();
             }
         };
@@ -51,11 +66,12 @@ public class MainActivity extends AppCompatActivity implements PeopleAdapter.Peo
         touchHelper.attachToRecyclerView(peopleRecycleView);
 
         presenter.getData();
+        return view;
     }
 
     @Override
     public void onPersonClick(Person person) {
-        Intent details = new Intent(this, DetailsActivity.class);
+        Intent details = new Intent(getContext(), DetailsActivity.class);
         details.putExtra("Person", person);
         startActivity(details);
     }
@@ -67,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements PeopleAdapter.Peo
 
     @Override
     public void onErrorOccured(@StringRes int errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
     }
 
     private void ensureAdapter(List<Person> items) {
@@ -81,3 +97,5 @@ public class MainActivity extends AppCompatActivity implements PeopleAdapter.Peo
     }
 
 }
+
+

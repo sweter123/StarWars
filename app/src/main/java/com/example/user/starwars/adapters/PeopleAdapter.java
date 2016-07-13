@@ -1,10 +1,13 @@
-package com.example.user.starwars;
+package com.example.user.starwars.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.user.starwars.R;
+import com.example.user.starwars.SWAPI.people.Person;
 
 import java.util.List;
 
@@ -21,7 +24,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
     LayoutInflater layoutInflater;
     PeopleClickListener callback;
 
-    interface PeopleClickListener {
+    public interface PeopleClickListener {
         void onPersonClick(Person person);
     }
 

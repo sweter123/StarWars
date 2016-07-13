@@ -1,12 +1,11 @@
 package com.example.user.starwars.mvp.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
-import com.example.user.starwars.Person;
 import com.example.user.starwars.R;
-import com.example.user.starwars.ResultSet;
-import com.example.user.starwars.StarWarsService;
+import com.example.user.starwars.SWAPI.ResultSet;
+import com.example.user.starwars.SWAPI.StarWarsService;
+import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.database.StarWarsSQLiteOpenhelper;
 import com.example.user.starwars.database.people.PeopleRepository;
 import com.example.user.starwars.database.people.specification.PeopleSpecification;

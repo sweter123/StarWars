@@ -1,4 +1,4 @@
-package com.example.user.starwars;
+package com.example.user.starwars.SWAPI.people;
 
 import java.io.Serializable;
 

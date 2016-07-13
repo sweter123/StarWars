@@ -1,6 +1,6 @@
 package com.example.user.starwars.mvp.contract;
 
-import com.example.user.starwars.Person;
+import com.example.user.starwars.SWAPI.people.Person;
 
 /**
  * Created by user on 13.07.2016.

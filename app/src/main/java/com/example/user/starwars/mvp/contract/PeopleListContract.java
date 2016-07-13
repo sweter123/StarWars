@@ -2,7 +2,7 @@ package com.example.user.starwars.mvp.contract;
 
 import android.support.annotation.StringRes;
 
-import com.example.user.starwars.Person;
+import com.example.user.starwars.SWAPI.people.Person;
 
 import java.util.List;
 

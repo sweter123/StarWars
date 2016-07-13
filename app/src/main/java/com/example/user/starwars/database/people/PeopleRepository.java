@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.user.starwars.Person;
+import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.database.people.specification.PeopleSpecification;
 import com.example.user.starwars.database.Repository;
 import com.example.user.starwars.database.Specification;

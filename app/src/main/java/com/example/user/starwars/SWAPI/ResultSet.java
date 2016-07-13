@@ -1,9 +1,7 @@
-package com.example.user.starwars;
+package com.example.user.starwars.SWAPI;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
+import com.example.user.starwars.SWAPI.*;
+import com.example.user.starwars.SWAPI.people.Person;
 
 import java.util.List;
 

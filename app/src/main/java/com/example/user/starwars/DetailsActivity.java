@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.mvp.contract.DetailsContract;
 import com.example.user.starwars.mvp.presenter.DetailsPresenter;
 
