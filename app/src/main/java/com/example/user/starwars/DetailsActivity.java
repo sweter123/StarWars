@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.user.starwars.mvp.contract.DetailsContract;
+import com.example.user.starwars.mvp.presenter.DetailsPresenter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements DetailsContract.View {
 
     @BindView(R.id.name)
     TextView name;
@@ -24,19 +27,26 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.hairscolor)
     TextView hairscolor;
 
-    Person person;
+
+    DetailsContract.Presenter presenter;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
-        person = (Person) getIntent().getExtras().getSerializable("Person");
-        name.setText(person.getName());
-        birth.setText(person.getBirthYear());
-        gender.setText(person.getGender());
-        height.setText(person.getHeight());
-        mass.setText(person.getMass());
-        eyescolor.setText(person.getEyeColor());
-        hairscolor.setText(person.getHairColor());
+        presenter = new DetailsPresenter(getIntent(), this);
+        presenter.getData();
+    }
+
+    @Override
+    public void onDataLoaded(Person item) {
+        name.setText(item.getName());
+        birth.setText(item.getBirthYear());
+        gender.setText(item.getGender());
+        height.setText(item.getHeight());
+        mass.setText(item.getMass());
+        eyescolor.setText(item.getEyeColor());
+        hairscolor.setText(item.getHairColor());
     }
 }

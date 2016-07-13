@@ -43,9 +43,10 @@ public class MainActivity extends AppCompatActivity implements PeopleAdapter.Peo
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                     adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
         };
+
         ItemTouchHelper touchHelper = new ItemTouchHelper(simpleCallback);
         touchHelper.attachToRecyclerView(peopleRecycleView);
 
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements PeopleAdapter.Peo
     }
 
     private void ensureAdapter(List<Person> items) {
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new PeopleAdapter(items);
             adapter.setOnClickListener(this);
             peopleRecycleView.setAdapter(adapter);
