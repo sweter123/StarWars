@@ -38,6 +38,7 @@ public class StarshipsDetailsActivity extends AppCompatActivity implements Detai
 
     @Override
     public void onDataLoaded(Starship item) {
+        setTitle(item.getName());
         name.setText(item.getName());
         model.setText(item.getModel());
         manufacturer.setText(item.getManufacturer());

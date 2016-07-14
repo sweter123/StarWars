@@ -38,6 +38,7 @@ public class FilmsDetailsActivity extends AppCompatActivity implements DetailsCo
 
     @Override
     public void onDataLoaded(Film item) {
+        setTitle(item.getTitle());
         name.setText(item.getTitle());
         director.setText(item.getDirector());
         producer.setText(item.getProducer());

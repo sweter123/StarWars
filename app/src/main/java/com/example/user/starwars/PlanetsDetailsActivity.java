@@ -35,6 +35,7 @@ public class PlanetsDetailsActivity extends AppCompatActivity implements Details
 
     @Override
     public void onDataLoaded(Planet item) {
+        setTitle(item.getName());
         name.setText(item.getName());
         population.setText(item.getPopulation());
         climate.setText(item.getClimate());
