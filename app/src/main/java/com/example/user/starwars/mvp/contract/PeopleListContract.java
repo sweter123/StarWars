@@ -2,8 +2,6 @@ package com.example.user.starwars.mvp.contract;
 
 import android.support.annotation.StringRes;
 
-import com.example.user.starwars.SWAPI.people.Person;
-
 import java.util.List;
 
 /**
@@ -16,9 +14,9 @@ public interface PeopleListContract {
         void getData();
     }
 
-    interface View {
+    interface View<T> {
 
-        void onDataLoaded(List<Person> items);
+        void onDataLoaded(List<T> items);
 
         void onErrorOccured(@StringRes int errorMessage);
 

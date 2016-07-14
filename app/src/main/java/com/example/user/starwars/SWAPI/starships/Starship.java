@@ -1,15 +1,19 @@
 package com.example.user.starwars.SWAPI.starships;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by user on 13.07.2016.
  */
-public class Starship {
+public class Starship implements Parcelable {
+
     String name;
     String model;
     String manufacturer;
     String length;
     String crew;
-    String starshioClass;
+    String starshipClass;
 
     public String getName() {
         return name;
@@ -51,12 +55,12 @@ public class Starship {
         this.crew = crew;
     }
 
-    public String getStarshioClass() {
-        return starshioClass;
+    public String getStarshipClass() {
+        return starshipClass;
     }
 
-    public void setStarshioClass(String starshioClass) {
-        this.starshioClass = starshioClass;
+    public void setStarshipClass(String starshioClass) {
+        this.starshipClass = starshioClass;
     }
 
     @Override
@@ -67,7 +71,46 @@ public class Starship {
                 ", manufacturer='" + manufacturer + '\'' +
                 ", length='" + length + '\'' +
                 ", crew='" + crew + '\'' +
-                ", starshioClass='" + starshioClass + '\'' +
+                ", starshioClass='" + starshipClass + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.model);
+        dest.writeString(this.manufacturer);
+        dest.writeString(this.length);
+        dest.writeString(this.crew);
+        dest.writeString(this.starshipClass);
+    }
+
+    public Starship() {
+    }
+
+    protected Starship(Parcel in) {
+        this.name = in.readString();
+        this.model = in.readString();
+        this.manufacturer = in.readString();
+        this.length = in.readString();
+        this.crew = in.readString();
+        this.starshipClass = in.readString();
+    }
+
+    public static final Creator<Starship> CREATOR = new Creator<Starship>() {
+        @Override
+        public Starship createFromParcel(Parcel source) {
+            return new Starship(source);
+        }
+
+        @Override
+        public Starship[] newArray(int size) {
+            return new Starship[size];
+        }
+    };
 }

@@ -11,7 +11,7 @@ import com.example.user.starwars.mvp.presenter.DetailsPresenter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailsActivity extends AppCompatActivity implements DetailsContract.View {
+public class PeopleDetailsActivity extends AppCompatActivity implements DetailsContract.View<Person> {
 
     @BindView(R.id.name)
     TextView name;
@@ -42,6 +42,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
     @Override
     public void onDataLoaded(Person item) {
+        setTitle(item.getName());
         name.setText(item.getName());
         birth.setText(item.getBirthYear());
         gender.setText(item.getGender());

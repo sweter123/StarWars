@@ -8,6 +8,6 @@
     android:id="@+id/container_layout"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main2"
-    tools:context="com.example.user.starwars.Main2Activity">
+    tools:context=".MainActivity">
 
 </FrameLayout>

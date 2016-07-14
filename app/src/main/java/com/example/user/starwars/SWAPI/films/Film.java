@@ -1,15 +1,19 @@
 package com.example.user.starwars.SWAPI.films;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by user on 13.07.2016.
  */
-public class Film {
+public class Film implements Parcelable {
     String title;
-    int episodeId;
     String director;
     String Producer;
     String openingCrawl;
-    String releseDate;
+    String releaseDate;
 
     public String getTitle() {
         return title;
@@ -17,14 +21,6 @@ public class Film {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public int getEpisodeId() {
-        return episodeId;
-    }
-
-    public void setEpisodeId(int episodeId) {
-        this.episodeId = episodeId;
     }
 
     public String getDirector() {
@@ -51,23 +47,59 @@ public class Film {
         this.openingCrawl = openingCrawl;
     }
 
-    public String getReleseDate() {
-        return releseDate;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setReleseDate(String releseDate) {
-        this.releseDate = releseDate;
+    public void setReleaseDate(String releseDate) {
+        this.releaseDate = releseDate;
     }
 
     @Override
     public String toString() {
         return "Film{" +
                 "title='" + title + '\'' +
-                ", episodeId=" + episodeId +
                 ", director='" + director + '\'' +
                 ", Producer='" + Producer + '\'' +
                 ", openingCrawl='" + openingCrawl + '\'' +
-                ", releseDate='" + releseDate + '\'' +
+                ", releseDate='" + releaseDate + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.title);
+        dest.writeString(this.director);
+        dest.writeString(this.Producer);
+        dest.writeString(this.openingCrawl);
+        dest.writeString(this.releaseDate);
+    }
+
+    public Film() {
+    }
+
+    protected Film(Parcel in) {
+        this.title = in.readString();
+        this.director = in.readString();
+        this.Producer = in.readString();
+        this.openingCrawl = in.readString();
+        this.releaseDate = in.readString();
+    }
+
+    public static final Creator<Film> CREATOR = new Creator<Film>() {
+        @Override
+        public Film createFromParcel(Parcel source) {
+            return new Film(source);
+        }
+
+        @Override
+        public Film[] newArray(int size) {
+            return new Film[size];
+        }
+    };
 }

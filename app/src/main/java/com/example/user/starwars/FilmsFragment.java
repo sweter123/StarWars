@@ -12,32 +12,34 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.example.user.starwars.SWAPI.films.Film;
 import com.example.user.starwars.SWAPI.people.Person;
+import com.example.user.starwars.adapters.FilmsAdapter;
 import com.example.user.starwars.adapters.PeopleAdapter;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
+import com.example.user.starwars.mvp.presenter.FilmsListPresenter;
 import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClickListener, PeopleListContract.View<Person>{
+public class FilmsFragment extends Fragment implements PeopleListContract.View, FilmsAdapter.PeopleClickListener {
 
 
-    @BindView(R.id.peopleRecycleView)
-    RecyclerView peopleRecycleView;
+    @BindView(R.id.filmsRecyclerView)
+    RecyclerView filmsRecyclerView;
+    private FilmsListPresenter presenter;
+    FilmsAdapter adapter;
 
-    private PeopleListContract.Presenter presenter;
-    private PeopleAdapter adapter;
-
-    public PeopleFragment() {
+    public FilmsFragment() {
         // Required empty public constructor
     }
 
@@ -46,10 +48,10 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_people, container, false);
+        View view = inflater.inflate(R.layout.fragment_films, container, false);
         ButterKnife.bind(this, view);
-        presenter = new PeopleListPresenter(this, getContext());
-        peopleRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        presenter = new FilmsListPresenter(this, getContext());
+        filmsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
@@ -64,8 +66,7 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
         };
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(simpleCallback);
-        touchHelper.attachToRecyclerView(peopleRecycleView);
-
+        touchHelper.attachToRecyclerView(filmsRecyclerView);
         return view;
     }
 
@@ -76,32 +77,29 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
     }
 
     @Override
-    public void onPersonClick(Person person) {
-        Intent details = new Intent(getContext(), PeopleDetailsActivity.class);
-        details.putExtra("Person", person);
-        startActivity(details);
-    }
-
-    @Override
-    public void onDataLoaded(List<Person> items) {
+    public void onDataLoaded(List items) {
         ensureAdapter(items);
     }
 
     @Override
     public void onErrorOccured(@StringRes int errorMessage) {
-        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+
     }
 
-    private void ensureAdapter(List<Person> items) {
+    private void ensureAdapter(List<Film> items) {
         if (adapter == null) {
-            adapter = new PeopleAdapter(items);
+            adapter = new FilmsAdapter(items);
             adapter.setOnClickListener(this);
-            peopleRecycleView.setAdapter(adapter);
+            filmsRecyclerView.setAdapter(adapter);
         } else {
             adapter.setItems(items);
         }
     }
 
+    @Override
+    public void onPersonClick(Film film) {
+        Intent details = new Intent(getContext(), FilmsDetailsActivity.class);
+        details.putExtra("Person", film);
+        startActivity(details);
+    }
 }
-
-

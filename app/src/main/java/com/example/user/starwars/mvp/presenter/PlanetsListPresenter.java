@@ -5,10 +5,12 @@ import android.content.Context;
 import com.example.user.starwars.R;
 import com.example.user.starwars.SWAPI.ResultSet;
 import com.example.user.starwars.SWAPI.StarWarsService;
-import com.example.user.starwars.SWAPI.people.Person;
+import com.example.user.starwars.SWAPI.planets.Planet;
 import com.example.user.starwars.database.StarWarsSQLiteOpenhelper;
 import com.example.user.starwars.database.people.PeopleRepository;
 import com.example.user.starwars.database.people.specification.PeopleSpecification;
+import com.example.user.starwars.database.planets.PlanetsRepository;
+import com.example.user.starwars.database.planets.specification.PlanetsSpecification;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -28,18 +30,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 /**
- * Created by user on 13.07.2016.
+ * Created by user on 14.07.2016.
  */
-public class PeopleListPresenter implements PeopleListContract.Presenter {
+public class PlanetsListPresenter implements PeopleListContract.Presenter {
 
     public static final String HTTP_SWAPI_CO_API = "http://swapi.co/api/";
 
     private final PeopleListContract.View view;
     private final StarWarsService service;
-    private final PeopleRepository database;
+    private final PlanetsRepository database;
 
 
-    public PeopleListPresenter(PeopleListContract.View view, Context context) {
+    public PlanetsListPresenter(PeopleListContract.View view, Context context) {
         this.view = view;
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
@@ -53,7 +55,7 @@ public class PeopleListPresenter implements PeopleListContract.Presenter {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         service = retrofit.create(StarWarsService.class);
-        database =  new PeopleRepository(new StarWarsSQLiteOpenhelper(context));
+        database =  new PlanetsRepository(new StarWarsSQLiteOpenhelper(context));
 
 
     }
@@ -61,27 +63,27 @@ public class PeopleListPresenter implements PeopleListContract.Presenter {
     @Override
     public void getData() {
         Timber.i("pobieram");
-        service.listPeople().enqueue(new Callback<ResultSet<Person>>() {
+        service.listPlanet().enqueue(new Callback<ResultSet<Planet>>() {
             @Override
-            public void onResponse(Call<ResultSet<Person>> call, Response<ResultSet<Person>> response) {
+            public void onResponse(Call<ResultSet<Planet>> call, Response<ResultSet<Planet>> response) {
                 if(response.isSuccessful()){
                     Timber.i(response.body().getCount());
-                    List<Person> people = new ArrayList<>(response.body().getResults());
-                    Timber.i(people.size()+"");
-                    database.add(people);
-                    view.onDataLoaded(people);
+                    List<Planet> planets = new ArrayList<>(response.body().getResults());
+                    Timber.i(planets.size()+"");
+                    database.add(planets);
+                    view.onDataLoaded(planets);
                 }
             }
 
             @Override
-            public void onFailure(Call<ResultSet<Person>> call, Throwable t) {
+            public void onFailure(Call<ResultSet<Planet>> call, Throwable t) {
                 Timber.i("Bład komunikacji pobieram dane z bazy");
                 if (t instanceof IOException) {
-                    List<Person> people = database.query(new PeopleSpecification());
-                    if(people.isEmpty()){
+                    List<Planet> planets = database.query(new PlanetsSpecification());
+                    if(planets.isEmpty()){
                         view.onErrorOccured(R.string.error_list_empty);
                     }
-                    view.onDataLoaded(people);
+                    view.onDataLoaded(planets);
                 }
             }
         });

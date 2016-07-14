@@ -1,6 +1,5 @@
 package com.example.user.starwars.mvp.contract;
 
-import com.example.user.starwars.SWAPI.people.Person;
 
 /**
  * Created by user on 13.07.2016.
@@ -12,8 +11,8 @@ public interface DetailsContract {
         void getData();
     }
 
-    interface View {
+    interface View<T> {
 
-        void onDataLoaded(Person item);
+        void onDataLoaded(T item);
     }
 }

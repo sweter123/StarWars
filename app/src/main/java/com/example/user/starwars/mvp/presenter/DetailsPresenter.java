@@ -8,7 +8,7 @@ import com.example.user.starwars.mvp.contract.DetailsContract;
 /**
  * Created by user on 13.07.2016.
  */
-public class DetailsPresenter implements DetailsContract.Presenter {
+public class DetailsPresenter<T> implements DetailsContract.Presenter {
 
     Intent intent;
     DetailsContract.View view;
@@ -20,7 +20,7 @@ public class DetailsPresenter implements DetailsContract.Presenter {
 
     @Override
     public void getData() {
-        Person person = (Person) intent.getExtras().getSerializable("Person");
+        T person = (T) intent.getExtras().getParcelable("Person");
         view.onDataLoaded(person);
     }
 }

@@ -15,9 +15,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.user.starwars.SWAPI.people.Person;
+import com.example.user.starwars.SWAPI.planets.Planet;
 import com.example.user.starwars.adapters.PeopleAdapter;
+import com.example.user.starwars.adapters.PlanetsAdapter;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
+import com.example.user.starwars.mvp.presenter.PlanetsListPresenter;
 
 import java.util.List;
 
@@ -28,16 +31,16 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClickListener, PeopleListContract.View<Person>{
+public class PlanetsFragment extends Fragment implements PeopleListContract.View<Planet>,PlanetsAdapter.PeopleClickListener {
 
 
     @BindView(R.id.peopleRecycleView)
     RecyclerView peopleRecycleView;
 
     private PeopleListContract.Presenter presenter;
-    private PeopleAdapter adapter;
+    private PlanetsAdapter adapter;
 
-    public PeopleFragment() {
+    public PlanetsFragment() {
         // Required empty public constructor
     }
 
@@ -48,7 +51,7 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people, container, false);
         ButterKnife.bind(this, view);
-        presenter = new PeopleListPresenter(this, getContext());
+        presenter = new PlanetsListPresenter(this, getContext());
         peopleRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
@@ -75,15 +78,9 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
         presenter.getData();
     }
 
-    @Override
-    public void onPersonClick(Person person) {
-        Intent details = new Intent(getContext(), PeopleDetailsActivity.class);
-        details.putExtra("Person", person);
-        startActivity(details);
-    }
 
     @Override
-    public void onDataLoaded(List<Person> items) {
+    public void onDataLoaded(List<Planet> items) {
         ensureAdapter(items);
     }
 
@@ -92,9 +89,9 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
     }
 
-    private void ensureAdapter(List<Person> items) {
+    private void ensureAdapter(List<Planet> items) {
         if (adapter == null) {
-            adapter = new PeopleAdapter(items);
+            adapter = new PlanetsAdapter(items);
             adapter.setOnClickListener(this);
             peopleRecycleView.setAdapter(adapter);
         } else {
@@ -102,6 +99,11 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
         }
     }
 
+
+    @Override
+    public void onPersonClick(Planet planet) {
+        Intent details = new Intent(getContext(), PlanetsDetailsActivity.class);
+        details.putExtra("Person", planet);
+        startActivity(details);
+    }
 }
-
-

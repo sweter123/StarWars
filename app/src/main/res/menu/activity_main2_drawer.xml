@@ -12,7 +12,7 @@
             android:title="Films" />
         <item
             android:id="@+id/nav_planets"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_planets"
             android:title="Planets" />
         <item
             android:id="@+id/nav_starships"

@@ -1,11 +1,14 @@
 package com.example.user.starwars.SWAPI.people;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by user on 08.07.2016.
  */
-public class Person implements Serializable {
+public class Person implements Parcelable {
     String name;
     String birthYear;
     String eyeColor;
@@ -80,4 +83,45 @@ public class Person implements Serializable {
                 ", mass='" + mass + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.birthYear);
+        dest.writeString(this.eyeColor);
+        dest.writeString(this.height);
+        dest.writeString(this.gender);
+        dest.writeString(this.hairColor);
+        dest.writeString(this.mass);
+    }
+
+    public Person() {
+    }
+
+    protected Person(Parcel in) {
+        this.name = in.readString();
+        this.birthYear = in.readString();
+        this.eyeColor = in.readString();
+        this.height = in.readString();
+        this.gender = in.readString();
+        this.hairColor = in.readString();
+        this.mass = in.readString();
+    }
+
+    public static final Creator<Person> CREATOR = new Creator<Person>() {
+        @Override
+        public Person createFromParcel(Parcel source) {
+            return new Person(source);
+        }
+
+        @Override
+        public Person[] newArray(int size) {
+            return new Person[size];
+        }
+    };
 }

@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class Main2Activity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -33,7 +33,7 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_people);
-        //navigationView.
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_people));
     }
 
     @Override
@@ -70,19 +70,35 @@ public class Main2Activity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        FragmentTransaction transaction;
         switch(id){
             case R.id.nav_people:
                 Timber.i("podmieniam fragment");
-                PeopleFragment fragment = new PeopleFragment();
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container_layout, fragment);
+                PeopleFragment peopleFragment = new PeopleFragment();
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container_layout, peopleFragment);
                 transaction.commit();
                 break;
             case R.id.nav_films:
+                Timber.i("podmieniam fragment");
+                FilmsFragment filmsFragment = new FilmsFragment();
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container_layout, filmsFragment);
+                transaction.commit();
                 break;
             case R.id.nav_planets:
+                Timber.i("podmieniam fragment");
+                PlanetsFragment planetsFragment = new PlanetsFragment();
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container_layout, planetsFragment);
+                transaction.commit();
                 break;
             case R.id.nav_starships:
+                Timber.i("podmieniam fragment");
+                StarshipsFragment starshipsFragment = new StarshipsFragment();
+                transaction =  getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container_layout, starshipsFragment);
+                transaction.commit();
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
