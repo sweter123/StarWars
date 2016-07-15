@@ -31,8 +31,8 @@ import butterknife.ButterKnife;
 public class StarshipsFragment extends Fragment implements PeopleListContract.View<Starship>, StarshipsAdapter.PeopleClickListener {
 
 
-    @BindView(R.id.peopleRecycleView)
-    RecyclerView peopleRecycleView;
+    @BindView(R.id.starshipsRecyclerView)
+    RecyclerView starshipsRecyclerView;
 
     private PeopleListContract.Presenter presenter;
     private StarshipsAdapter adapter;
@@ -46,10 +46,10 @@ public class StarshipsFragment extends Fragment implements PeopleListContract.Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_people, container, false);
+        View view = inflater.inflate(R.layout.fragment_starships, container, false);
         ButterKnife.bind(this, view);
         presenter = new StarshipsListPresenter(this, getContext());
-        peopleRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        starshipsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
@@ -64,7 +64,7 @@ public class StarshipsFragment extends Fragment implements PeopleListContract.Vi
         };
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(simpleCallback);
-        touchHelper.attachToRecyclerView(peopleRecycleView);
+        touchHelper.attachToRecyclerView(starshipsRecyclerView);
 
         return view;
     }
@@ -91,7 +91,7 @@ public class StarshipsFragment extends Fragment implements PeopleListContract.Vi
         if (adapter == null) {
             adapter = new StarshipsAdapter(items);
             adapter.setOnClickListener(this);
-            peopleRecycleView.setAdapter(adapter);
+            starshipsRecyclerView.setAdapter(adapter);
         } else {
             adapter.setItems(items);
         }

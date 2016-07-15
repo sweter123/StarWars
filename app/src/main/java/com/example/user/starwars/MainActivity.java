@@ -10,12 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    @BindView(R.id.container_layout)
+    FrameLayout containerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +35,11 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_people);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_people));
+        AppProvider app = (AppProvider)getApplication();
     }
 
     @Override
@@ -46,12 +52,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main2, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentTransaction transaction;
-        switch(id){
+        switch (id) {
             case R.id.nav_people:
                 Timber.i("podmieniam fragment");
                 PeopleFragment peopleFragment = new PeopleFragment();
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_starships:
                 Timber.i("podmieniam fragment");
                 StarshipsFragment starshipsFragment = new StarshipsFragment();
-                transaction =  getSupportFragmentManager().beginTransaction();
+                transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.container_layout, starshipsFragment);
                 transaction.commit();
                 break;

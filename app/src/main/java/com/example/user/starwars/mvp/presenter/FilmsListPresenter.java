@@ -2,6 +2,7 @@ package com.example.user.starwars.mvp.presenter;
 
 import android.content.Context;
 
+import com.example.user.starwars.AppProvider;
 import com.example.user.starwars.R;
 import com.example.user.starwars.SWAPI.ResultSet;
 import com.example.user.starwars.SWAPI.StarWarsService;
@@ -9,10 +10,6 @@ import com.example.user.starwars.SWAPI.films.Film;
 import com.example.user.starwars.database.StarWarsSQLiteOpenhelper;
 import com.example.user.starwars.database.films.FilmsRepository;
 import com.example.user.starwars.database.films.specification.FilmsSpecification;
-import com.example.user.starwars.database.people.PeopleRepository;
-import com.example.user.starwars.database.people.specification.PeopleSpecification;
-import com.example.user.starwars.database.planets.PlanetsRepository;
-import com.example.user.starwars.database.planets.specification.PlanetsSpecification;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -45,19 +42,9 @@ public class FilmsListPresenter implements PeopleListContract.Presenter {
 
     public FilmsListPresenter(PeopleListContract.View view, Context context) {
         this.view = view;
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .build();
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(HTTP_SWAPI_CO_API)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        service = retrofit.create(StarWarsService.class);
-        database =  new FilmsRepository(new StarWarsSQLiteOpenhelper(context));
+        AppProvider app = (AppProvider)context.getApplicationContext();
+        service = ((AppProvider)context.getApplicationContext()).getStarWarsService();
+        database =  app.getFilmsRepository();
 
 
     }

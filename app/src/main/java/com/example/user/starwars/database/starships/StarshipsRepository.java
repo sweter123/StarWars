@@ -23,12 +23,11 @@ import timber.log.Timber;
 /**
  * Created by user on 14.07.2016.
  */
-public class StarshipsRepository implements Repository<Starship> {
+public class StarshipsRepository implements StarShipRepositoryI {
 
     private SQLiteOpenHelper openHelper;
 
     public StarshipsRepository(SQLiteOpenHelper openHelper) {
-
         this.openHelper = openHelper;
     }
 
@@ -40,11 +39,10 @@ public class StarshipsRepository implements Repository<Starship> {
     @Override
     public void add(Iterable<Starship> items) {
         SQLiteDatabase writableDatabase = openHelper.getWritableDatabase();
-        SQLiteDatabase readableDatabase = openHelper.getReadableDatabase();
         try {
             writableDatabase.beginTransaction();
             for (Starship item : items) {
-                Cursor cursor = readableDatabase.rawQuery("SELECT * FROM " + StarshipsTable.TABLE_NAME + " WHERE " + StarshipsTable.Columns.NAME + "=?", new String[]{item.getName()});
+                Cursor cursor = writableDatabase.rawQuery("SELECT * FROM " + StarshipsTable.TABLE_NAME + " WHERE " + StarshipsTable.Columns.NAME + "=?", new String[]{item.getName()});
                 if (!cursor.moveToFirst()){
                     ContentValues starship = new ContentValues();
                     starship.put(StarshipsTable.Columns.NAME, item.getName());

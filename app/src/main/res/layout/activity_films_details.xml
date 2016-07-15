@@ -9,12 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".PeopleDetailsActivity">
 
-
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="50dp"
+        android:paddingBottom="20dp"
         android:text="Luke Skywalker"
         android:textSize="40dp" />
 

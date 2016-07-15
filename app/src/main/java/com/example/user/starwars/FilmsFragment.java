@@ -14,18 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.user.starwars.SWAPI.films.Film;
-import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.adapters.FilmsAdapter;
-import com.example.user.starwars.adapters.PeopleAdapter;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.FilmsListPresenter;
-import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 
 /**

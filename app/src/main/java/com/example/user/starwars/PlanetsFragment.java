@@ -34,8 +34,8 @@ import butterknife.ButterKnife;
 public class PlanetsFragment extends Fragment implements PeopleListContract.View<Planet>,PlanetsAdapter.PeopleClickListener {
 
 
-    @BindView(R.id.peopleRecycleView)
-    RecyclerView peopleRecycleView;
+    @BindView(R.id.planetsRecycleView)
+    RecyclerView planetsRecycleView;
 
     private PeopleListContract.Presenter presenter;
     private PlanetsAdapter adapter;
@@ -49,10 +49,10 @@ public class PlanetsFragment extends Fragment implements PeopleListContract.View
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_people, container, false);
+        View view = inflater.inflate(R.layout.fragment_planets, container, false);
         ButterKnife.bind(this, view);
         presenter = new PlanetsListPresenter(this, getContext());
-        peopleRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        planetsRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
@@ -67,7 +67,7 @@ public class PlanetsFragment extends Fragment implements PeopleListContract.View
         };
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(simpleCallback);
-        touchHelper.attachToRecyclerView(peopleRecycleView);
+        touchHelper.attachToRecyclerView(planetsRecycleView);
 
         return view;
     }
@@ -93,7 +93,7 @@ public class PlanetsFragment extends Fragment implements PeopleListContract.View
         if (adapter == null) {
             adapter = new PlanetsAdapter(items);
             adapter.setOnClickListener(this);
-            peopleRecycleView.setAdapter(adapter);
+            planetsRecycleView.setAdapter(adapter);
         } else {
             adapter.setItems(items);
         }

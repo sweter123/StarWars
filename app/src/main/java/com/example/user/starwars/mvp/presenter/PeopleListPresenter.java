@@ -2,6 +2,7 @@ package com.example.user.starwars.mvp.presenter;
 
 import android.content.Context;
 
+import com.example.user.starwars.AppProvider;
 import com.example.user.starwars.R;
 import com.example.user.starwars.SWAPI.ResultSet;
 import com.example.user.starwars.SWAPI.StarWarsService;
@@ -32,8 +33,6 @@ import timber.log.Timber;
  */
 public class PeopleListPresenter implements PeopleListContract.Presenter {
 
-    public static final String HTTP_SWAPI_CO_API = "http://swapi.co/api/";
-
     private final PeopleListContract.View view;
     private final StarWarsService service;
     private final PeopleRepository database;
@@ -41,20 +40,9 @@ public class PeopleListPresenter implements PeopleListContract.Presenter {
 
     public PeopleListPresenter(PeopleListContract.View view, Context context) {
         this.view = view;
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .build();
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(HTTP_SWAPI_CO_API)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        service = retrofit.create(StarWarsService.class);
-        database =  new PeopleRepository(new StarWarsSQLiteOpenhelper(context));
-
+        AppProvider app = (AppProvider)context.getApplicationContext();
+        service = app.getStarWarsService();
+        database =  app.getPeopleRepository();
 
     }
 
