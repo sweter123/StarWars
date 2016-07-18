@@ -1,8 +1,5 @@
 package com.example.user.starwars.mvp.presenter;
 
-import android.content.Context;
-
-import com.example.user.starwars.AppProvider;
 import com.example.user.starwars.R;
 import com.example.user.starwars.SWAPI.ResultSet;
 import com.example.user.starwars.SWAPI.StarWarsService;

@@ -14,14 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.SWAPI.planets.Planet;
-import com.example.user.starwars.adapters.PeopleAdapter;
 import com.example.user.starwars.adapters.PlanetsAdapter;
-import com.example.user.starwars.component.DaggerPeopleFragmentComponent;
+import com.example.user.starwars.component.DaggerFragmentComponent;
 import com.example.user.starwars.mvp.PeopleScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
-import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
 import com.example.user.starwars.mvp.presenter.PlanetsListPresenter;
 
 import java.util.List;
@@ -52,7 +49,7 @@ public class PlanetsFragment extends Fragment implements PeopleListContract.View
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DaggerPeopleFragmentComponent.builder()
+        DaggerFragmentComponent.builder()
                 .peopleScreenModule(new PeopleScreenModule(this))
                 .netComponent(((App) getContext().getApplicationContext()).getNetComponent())
                 .build().inject(this);

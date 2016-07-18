@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.adapters.PeopleAdapter;
 
-import com.example.user.starwars.component.DaggerPeopleFragmentComponent;
+import com.example.user.starwars.component.DaggerFragmentComponent;
 import com.example.user.starwars.mvp.PeopleScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
@@ -51,7 +51,7 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DaggerPeopleFragmentComponent.builder()
+        DaggerFragmentComponent.builder()
                 .peopleScreenModule(new PeopleScreenModule(this))
                 .netComponent(((App) getActivity().getApplicationContext()).getNetComponent())
                 .build().inject(this);

@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.user.starwars.SWAPI.films.Film;
 import com.example.user.starwars.adapters.FilmsAdapter;
-import com.example.user.starwars.component.DaggerPeopleFragmentComponent;
+import com.example.user.starwars.component.DaggerFragmentComponent;
 import com.example.user.starwars.mvp.PeopleScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.FilmsListPresenter;
@@ -48,7 +48,7 @@ public class FilmsFragment extends Fragment implements PeopleListContract.View, 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DaggerPeopleFragmentComponent.builder()
+        DaggerFragmentComponent.builder()
                 .peopleScreenModule(new PeopleScreenModule(this))
                 .netComponent(((App) getContext().getApplicationContext()).getNetComponent())
                 .build().inject(this);

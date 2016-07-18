@@ -1,19 +1,12 @@
 package com.example.user.starwars.mvp.presenter;
 
-import android.content.Context;
-
-import com.example.user.starwars.AppProvider;
 import com.example.user.starwars.R;
 import com.example.user.starwars.SWAPI.ResultSet;
 import com.example.user.starwars.SWAPI.StarWarsService;
 import com.example.user.starwars.SWAPI.films.Film;
-import com.example.user.starwars.database.StarWarsSQLiteOpenhelper;
 import com.example.user.starwars.database.films.FilmsRepository;
 import com.example.user.starwars.database.films.specification.FilmsSpecification;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,13 +14,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 /**
