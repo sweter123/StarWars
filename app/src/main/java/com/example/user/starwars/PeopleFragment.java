@@ -16,10 +16,15 @@ import android.widget.Toast;
 
 import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.adapters.PeopleAdapter;
+
+import com.example.user.starwars.component.DaggerPeopleFragmentComponent;
+import com.example.user.starwars.mvp.PeopleScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,13 +39,23 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
     @BindView(R.id.peopleRecycleView)
     RecyclerView peopleRecycleView;
 
-    private PeopleListContract.Presenter presenter;
+    @Inject
+    PeopleListPresenter presenter;
+
     private PeopleAdapter adapter;
 
     public PeopleFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DaggerPeopleFragmentComponent.builder()
+                .peopleScreenModule(new PeopleScreenModule(this))
+                .netComponent(((App) getActivity().getApplicationContext()).getNetComponent())
+                .build().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,8 +63,9 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people, container, false);
         ButterKnife.bind(this, view);
-        presenter = new PeopleListPresenter(this, getContext());
         peopleRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override

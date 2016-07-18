@@ -16,10 +16,14 @@ import android.widget.Toast;
 
 import com.example.user.starwars.SWAPI.starships.Starship;
 import com.example.user.starwars.adapters.StarshipsAdapter;
+import com.example.user.starwars.component.DaggerPeopleFragmentComponent;
+import com.example.user.starwars.mvp.PeopleScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.StarshipsListPresenter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,13 +38,22 @@ public class StarshipsFragment extends Fragment implements PeopleListContract.Vi
     @BindView(R.id.starshipsRecyclerView)
     RecyclerView starshipsRecyclerView;
 
-    private PeopleListContract.Presenter presenter;
+    @Inject
+    StarshipsListPresenter presenter;
     private StarshipsAdapter adapter;
 
     public StarshipsFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DaggerPeopleFragmentComponent.builder()
+                .peopleScreenModule(new PeopleScreenModule(this))
+                .netComponent(((App) getContext().getApplicationContext()).getNetComponent())
+                .build().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +61,6 @@ public class StarshipsFragment extends Fragment implements PeopleListContract.Vi
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_starships, container, false);
         ButterKnife.bind(this, view);
-        presenter = new StarshipsListPresenter(this, getContext());
         starshipsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {

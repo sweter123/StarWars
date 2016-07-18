@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -33,18 +35,16 @@ import timber.log.Timber;
  */
 public class FilmsListPresenter implements PeopleListContract.Presenter {
 
-    public static final String HTTP_SWAPI_CO_API = "http://swapi.co/api/";
 
     private final PeopleListContract.View view;
     private final StarWarsService service;
-    private final FilmsRepository database;
+    private final FilmsRepository db;
 
-
-    public FilmsListPresenter(PeopleListContract.View view, Context context) {
+    @Inject
+    public FilmsListPresenter(PeopleListContract.View view, StarWarsService service, FilmsRepository db) {
         this.view = view;
-        AppProvider app = (AppProvider)context.getApplicationContext();
-        service = ((AppProvider)context.getApplicationContext()).getStarWarsService();
-        database =  app.getFilmsRepository();
+        this.service = service;
+        this.db = db;
 
 
     }
@@ -56,11 +56,11 @@ public class FilmsListPresenter implements PeopleListContract.Presenter {
         service.listFilms().enqueue(new Callback<ResultSet<Film>>() {
             @Override
             public void onResponse(Call<ResultSet<Film>> call, Response<ResultSet<Film>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Timber.i(response.body().getCount());
                     List<Film> films = new ArrayList<>(response.body().getResults());
-                    Timber.i(films.size()+"");
-                    database.add(films);
+                    Timber.i(films.size() + "");
+                    db.add(films);
                     view.onDataLoaded(films);
                 }
             }
@@ -69,8 +69,8 @@ public class FilmsListPresenter implements PeopleListContract.Presenter {
             public void onFailure(Call<ResultSet<Film>> call, Throwable t) {
                 Timber.i("Bład komunikacji pobieram dane z bazy");
                 if (t instanceof IOException) {
-                    List<Film> films = database.query(new FilmsSpecification());
-                    if(films.isEmpty()){
+                    List<Film> films = db.query(new FilmsSpecification());
+                    if (films.isEmpty()) {
                         view.onErrorOccured(R.string.error_list_empty);
                     }
                     view.onDataLoaded(films);

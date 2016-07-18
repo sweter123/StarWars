@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_people);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_people));
-        AppProvider app = (AppProvider)getApplication();
     }
 
     @Override

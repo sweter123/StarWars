@@ -2,6 +2,7 @@ package com.example.user.starwars.mvp.presenter;
 
 import android.content.Context;
 
+import com.example.user.starwars.App;
 import com.example.user.starwars.AppProvider;
 import com.example.user.starwars.R;
 import com.example.user.starwars.SWAPI.ResultSet;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -33,17 +36,15 @@ import timber.log.Timber;
  */
 public class PeopleListPresenter implements PeopleListContract.Presenter {
 
-    private final PeopleListContract.View view;
-    private final StarWarsService service;
-    private final PeopleRepository database;
+    PeopleListContract.View view;
+    StarWarsService service;
+    PeopleRepository db;
 
-
-    public PeopleListPresenter(PeopleListContract.View view, Context context) {
+    @Inject
+    public PeopleListPresenter(PeopleListContract.View view, StarWarsService service, PeopleRepository db) {
         this.view = view;
-        AppProvider app = (AppProvider)context.getApplicationContext();
-        service = app.getStarWarsService();
-        database =  app.getPeopleRepository();
-
+        this.service = service;
+        this.db = db;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class PeopleListPresenter implements PeopleListContract.Presenter {
                     Timber.i(response.body().getCount());
                     List<Person> people = new ArrayList<>(response.body().getResults());
                     Timber.i(people.size()+"");
-                    database.add(people);
+                    db.add(people);
                     view.onDataLoaded(people);
                 }
             }
@@ -65,7 +66,7 @@ public class PeopleListPresenter implements PeopleListContract.Presenter {
             public void onFailure(Call<ResultSet<Person>> call, Throwable t) {
                 Timber.i("Bład komunikacji pobieram dane z bazy");
                 if (t instanceof IOException) {
-                    List<Person> people = database.query(new PeopleSpecification());
+                    List<Person> people = db.query(new PeopleSpecification());
                     if(people.isEmpty()){
                         view.onErrorOccured(R.string.error_list_empty);
                     }

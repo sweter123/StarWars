@@ -15,10 +15,14 @@ import android.view.ViewGroup;
 
 import com.example.user.starwars.SWAPI.films.Film;
 import com.example.user.starwars.adapters.FilmsAdapter;
+import com.example.user.starwars.component.DaggerPeopleFragmentComponent;
+import com.example.user.starwars.mvp.PeopleScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.FilmsListPresenter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,13 +36,23 @@ public class FilmsFragment extends Fragment implements PeopleListContract.View, 
 
     @BindView(R.id.filmsRecyclerView)
     RecyclerView filmsRecyclerView;
-    private FilmsListPresenter presenter;
+
+    @Inject
+    FilmsListPresenter presenter;
     FilmsAdapter adapter;
 
     public FilmsFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DaggerPeopleFragmentComponent.builder()
+                .peopleScreenModule(new PeopleScreenModule(this))
+                .netComponent(((App) getContext().getApplicationContext()).getNetComponent())
+                .build().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,8 +60,9 @@ public class FilmsFragment extends Fragment implements PeopleListContract.View, 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_films, container, false);
         ButterKnife.bind(this, view);
-        presenter = new FilmsListPresenter(this, getContext());
         filmsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override

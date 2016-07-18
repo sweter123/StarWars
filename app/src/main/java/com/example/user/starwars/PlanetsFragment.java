@@ -18,11 +18,15 @@ import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.SWAPI.planets.Planet;
 import com.example.user.starwars.adapters.PeopleAdapter;
 import com.example.user.starwars.adapters.PlanetsAdapter;
+import com.example.user.starwars.component.DaggerPeopleFragmentComponent;
+import com.example.user.starwars.mvp.PeopleScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
 import com.example.user.starwars.mvp.presenter.PlanetsListPresenter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,13 +41,22 @@ public class PlanetsFragment extends Fragment implements PeopleListContract.View
     @BindView(R.id.planetsRecycleView)
     RecyclerView planetsRecycleView;
 
-    private PeopleListContract.Presenter presenter;
+    @Inject
+    PlanetsListPresenter presenter;
     private PlanetsAdapter adapter;
 
     public PlanetsFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DaggerPeopleFragmentComponent.builder()
+                .peopleScreenModule(new PeopleScreenModule(this))
+                .netComponent(((App) getContext().getApplicationContext()).getNetComponent())
+                .build().inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +64,6 @@ public class PlanetsFragment extends Fragment implements PeopleListContract.View
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_planets, container, false);
         ButterKnife.bind(this, view);
-        presenter = new PlanetsListPresenter(this, getContext());
         planetsRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {

@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -38,14 +40,13 @@ public class PlanetsListPresenter implements PeopleListContract.Presenter {
 
     private final PeopleListContract.View view;
     private final StarWarsService service;
-    private final PlanetsRepository database;
+    private final PlanetsRepository db;
 
-
-    public PlanetsListPresenter(PeopleListContract.View view, Context context) {
+    @Inject
+    public PlanetsListPresenter(PeopleListContract.View view, StarWarsService service, PlanetsRepository db) {
         this.view = view;
-        AppProvider app = (AppProvider)context.getApplicationContext();
-        service = app.getStarWarsService();
-        database = app.getPlanetsRepository();
+        this.service = service;
+        this.db = db;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class PlanetsListPresenter implements PeopleListContract.Presenter {
                     Timber.i(response.body().getCount());
                     List<Planet> planets = new ArrayList<>(response.body().getResults());
                     Timber.i(planets.size()+"");
-                    database.add(planets);
+                    db.add(planets);
                     view.onDataLoaded(planets);
                 }
             }
@@ -67,7 +68,7 @@ public class PlanetsListPresenter implements PeopleListContract.Presenter {
             public void onFailure(Call<ResultSet<Planet>> call, Throwable t) {
                 Timber.i("Bład komunikacji pobieram dane z bazy");
                 if (t instanceof IOException) {
-                    List<Planet> planets = database.query(new PlanetsSpecification());
+                    List<Planet> planets = db.query(new PlanetsSpecification());
                     if(planets.isEmpty()){
                         view.onErrorOccured(R.string.error_list_empty);
                     }

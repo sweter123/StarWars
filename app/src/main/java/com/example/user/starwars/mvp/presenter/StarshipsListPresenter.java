@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,15 +29,13 @@ public class StarshipsListPresenter implements PeopleListContract.Presenter {
 
     private final PeopleListContract.View view;
     private final StarWarsService service;
-    private final StarshipsRepository database;
+    private final StarshipsRepository db;
 
-
-    public StarshipsListPresenter(PeopleListContract.View view, Context context) {
+    @Inject
+    public StarshipsListPresenter(PeopleListContract.View view, StarWarsService service, StarshipsRepository db) {
         this.view = view;
-        AppProvider app = (AppProvider)context.getApplicationContext();
-        service = (app).getStarWarsService();
-        database =  app.getStarshipRepository();
-
+        this.service = service;
+        this.db = db;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class StarshipsListPresenter implements PeopleListContract.Presenter {
                     Timber.i(response.body().getCount());
                     List<Starship> starships = new ArrayList<>(response.body().getResults());
                     Timber.i(starships.size()+"");
-                    database.add(starships);
+                    db.add(starships);
                     view.onDataLoaded(starships);
                 }
             }
@@ -57,7 +57,7 @@ public class StarshipsListPresenter implements PeopleListContract.Presenter {
             public void onFailure(Call<ResultSet<Starship>> call, Throwable t) {
                 Timber.i("Bład komunikacji pobieram dane z bazy");
                 if (t instanceof IOException) {
-                    List<Starship> starships = database.query(new StarshipsSpecification());
+                    List<Starship> starships = db.query(new StarshipsSpecification());
                     if(starships.isEmpty()){
                         view.onErrorOccured(R.string.error_list_empty);
                     }
