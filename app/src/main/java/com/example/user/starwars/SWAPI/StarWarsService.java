@@ -26,8 +26,8 @@ public interface StarWarsService {
     @GET("films/")
     Call<ResultSet<Film>> listFilms();
 
-    @GET("planets/")
-    Observable<ResultSet<Planet>> listPlanet();
+    @GET("planets/{id}")
+    Observable<Planet> listPlanet(@Path("id") int id);
 
     @GET("starships/")
     Call<ResultSet<Starship>> listStarships();

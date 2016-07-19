@@ -14,6 +14,7 @@ import com.example.user.starwars.mvp.contract.PeopleListContract;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,7 +36,7 @@ public class PlanetsListPresenter implements PeopleListContract.Presenter {
     private final PeopleListContract.View view;
     private final StarWarsService service;
     private final PlanetsRepository db;
-    private String next = "first";
+    private List<Planet> list = new ArrayList<>();
 
     @Inject
     public PlanetsListPresenter(PeopleListContract.View view, StarWarsService service, PlanetsRepository db) {
@@ -47,33 +48,37 @@ public class PlanetsListPresenter implements PeopleListContract.Presenter {
     @Override
     public void getData() {
         Timber.i("pobieram");
-        service.listPlanet()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResultSet<Planet>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
+        for (int i = 1; i <= 61 ; i++) {
+            service.listPlanet(i)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Planet>() {
+                        @Override
+                        public void onCompleted() {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.i("Bład komunikacji pobieram dane z bazy");
-                        if (e instanceof IOException) {
-                            List<Planet> planets = db.query(new PlanetsSpecification());
-                            if (planets.isEmpty()) {
-                                view.onErrorOccured(R.string.error_list_empty);
-                            }
-                            view.onDataLoaded(planets);
                         }
-                    }
 
-                    @Override
-                    public void onNext(ResultSet<Planet> planetResultSet) {
-                        List<Planet> planets = planetResultSet.getResults();
-                        view.onDataLoaded(planets);
-                        db.add(planets);
-                    }
-                });
+                        @Override
+                        public void onError(Throwable e) {
+                            Timber.i("Bład komunikacji pobieram dane z bazy");
+                            if (e instanceof IOException) {
+                                List<Planet> planets = db.query(new PlanetsSpecification());
+                                if (planets.isEmpty()) {
+                                    view.onErrorOccured(R.string.error_list_empty);
+                                }
+                                view.onDataLoaded(planets);
+                            }
+                        }
+
+                        @Override
+                        public void onNext(Planet planet) {
+                            list.add(planet);
+                            db.add(planet);
+                            view.onDataLoaded(list);
+                        }
+                    });
+        }
+
 //        service.listPlanet().enqueue(new Callback<ResultSet<Planet>>() {
 //            @Override
 //            public void onResponse(Call<ResultSet<Planet>> call, Response<ResultSet<Planet>> response) {
