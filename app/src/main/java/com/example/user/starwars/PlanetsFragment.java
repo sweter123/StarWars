@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.user.starwars.SWAPI.planets.Planet;
 import com.example.user.starwars.adapters.PlanetsAdapter;
 import com.example.user.starwars.component.DaggerFragmentComponent;
-import com.example.user.starwars.mvp.PeopleScreenModule;
+import com.example.user.starwars.mvp.ListScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.PlanetsListPresenter;
 
@@ -50,7 +50,7 @@ public class PlanetsFragment extends Fragment implements PeopleListContract.View
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerFragmentComponent.builder()
-                .peopleScreenModule(new PeopleScreenModule(this))
+                .listScreenModule(new ListScreenModule(this))
                 .netComponent(((App) getContext().getApplicationContext()).getNetComponent())
                 .build().inject(this);
     }

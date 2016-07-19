@@ -10,6 +10,7 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -41,6 +42,7 @@ public class NetModule {
     @Singleton
     public Retrofit getRetrofit(Gson gson, OkHttpClient client) {
         return new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(HTTP_SWAPI_CO_API)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))

@@ -18,7 +18,7 @@ import com.example.user.starwars.SWAPI.people.Person;
 import com.example.user.starwars.adapters.PeopleAdapter;
 
 import com.example.user.starwars.component.DaggerFragmentComponent;
-import com.example.user.starwars.mvp.PeopleScreenModule;
+import com.example.user.starwars.mvp.ListScreenModule;
 import com.example.user.starwars.mvp.contract.PeopleListContract;
 import com.example.user.starwars.mvp.presenter.PeopleListPresenter;
 
@@ -52,7 +52,7 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleClic
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerFragmentComponent.builder()
-                .peopleScreenModule(new PeopleScreenModule(this))
+                .listScreenModule(new ListScreenModule(this))
                 .netComponent(((App) getActivity().getApplicationContext()).getNetComponent())
                 .build().inject(this);
     }

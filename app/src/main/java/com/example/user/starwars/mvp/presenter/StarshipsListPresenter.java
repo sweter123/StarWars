@@ -38,30 +38,29 @@ public class StarshipsListPresenter implements PeopleListContract.Presenter {
     @Override
     public void getData() {
         Timber.i("pobieram");
-        service.listStarships().enqueue(new Callback<ResultSet<Starship>>() {
-            @Override
-            public void onResponse(Call<ResultSet<Starship>> call, Response<ResultSet<Starship>> response) {
-                if(response.isSuccessful()){
-                    Timber.i(response.body().getCount());
-                    List<Starship> starships = new ArrayList<>(response.body().getResults());
-                    Timber.i(starships.size()+"");
-                    db.add(starships);
-                    view.onDataLoaded(starships);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResultSet<Starship>> call, Throwable t) {
-                Timber.i("Bład komunikacji pobieram dane z bazy");
-                if (t instanceof IOException) {
-                    List<Starship> starships = db.query(new StarshipsSpecification());
-                    if(starships.isEmpty()){
-                        view.onErrorOccured(R.string.error_list_empty);
+            service.listStarships().enqueue(new Callback<ResultSet<Starship>>() {
+                @Override
+                public void onResponse(Call<ResultSet<Starship>> call, Response<ResultSet<Starship>> response) {
+                    if(response.isSuccessful()){
+                        Timber.i(response.body().getCount());
+                        List<Starship> starships = new ArrayList<>(response.body().getResults());
+                        Timber.i(starships.size()+"");
+                        db.add(starships);
+                        view.onDataLoaded(starships);
                     }
-                    view.onDataLoaded(starships);
                 }
-            }
-        });
 
+                @Override
+                public void onFailure(Call<ResultSet<Starship>> call, Throwable t) {
+                    Timber.i("Bład komunikacji pobieram dane z bazy");
+                    if (t instanceof IOException) {
+                        List<Starship> starships = db.query(new StarshipsSpecification());
+                        if(starships.isEmpty()){
+                            view.onErrorOccured(R.string.error_list_empty);
+                        }
+                        view.onDataLoaded(starships);
+                    }
+                }
+            });
     }
 }

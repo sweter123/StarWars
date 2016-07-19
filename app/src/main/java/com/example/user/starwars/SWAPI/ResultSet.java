@@ -9,6 +9,7 @@ public class ResultSet<T> {
 
     String count;
     List<T> results;
+    String next;
 
     public String getCount() {
         return count;
@@ -24,6 +25,14 @@ public class ResultSet<T> {
 
     public void setResults(List<T> results) {
         this.results = results;
+    }
+
+    public String getNext() {
+        return next;
+    }
+
+    public void setNext(String next) {
+        this.next = next;
     }
 }
 

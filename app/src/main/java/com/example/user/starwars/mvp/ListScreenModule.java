@@ -10,11 +10,11 @@ import dagger.Provides;
  * Created by Aditya on 11-May-16.
  */
 @Module
-public class PeopleScreenModule {
+public class ListScreenModule {
     private final PeopleListContract.View mView;
 
 
-    public PeopleScreenModule(PeopleListContract.View mView) {
+    public ListScreenModule(PeopleListContract.View mView) {
         this.mView = mView;
     }
 
