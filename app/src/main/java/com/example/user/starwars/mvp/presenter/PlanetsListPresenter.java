@@ -15,6 +15,7 @@ import com.example.user.starwars.mvp.contract.PeopleListContract;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,14 +49,20 @@ public class PlanetsListPresenter implements PeopleListContract.Presenter {
     @Override
     public void getData() {
         Timber.i("pobieram");
-        for (int i = 1; i <= 61 ; i++) {
+        for (int i = 1; i < 61 ; i++) {
             service.listPlanet(i)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<Planet>() {
                         @Override
                         public void onCompleted() {
-
+                            Collections.sort(list, new Comparator<Planet>() {
+                                @Override
+                                public int compare(Planet planet, Planet t1) {
+                                    return planet.getName().compareTo(t1.getName());
+                                }
+                            });
+                            view.onDataLoaded(list);
                         }
 
                         @Override
@@ -63,6 +70,12 @@ public class PlanetsListPresenter implements PeopleListContract.Presenter {
                             Timber.i("Bład komunikacji pobieram dane z bazy");
                             if (e instanceof IOException) {
                                 List<Planet> planets = db.query(new PlanetsSpecification());
+                                Collections.sort(list, new Comparator<Planet>() {
+                                    @Override
+                                    public int compare(Planet planet, Planet t1) {
+                                        return planet.getName().compareTo(t1.getName());
+                                    }
+                                });
                                 if (planets.isEmpty()) {
                                     view.onErrorOccured(R.string.error_list_empty);
                                 }
@@ -74,7 +87,6 @@ public class PlanetsListPresenter implements PeopleListContract.Presenter {
                         public void onNext(Planet planet) {
                             list.add(planet);
                             db.add(planet);
-                            view.onDataLoaded(list);
                         }
                     });
         }
